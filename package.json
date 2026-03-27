@@ -1,0 +1,29 @@
+{
+  "name": "iptv-streamer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pimdbg/iptv-streamer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pimdbg/iptv-streamer/issues"
+  },
+  "homepage": "https://github.com/pimdbg/iptv-streamer#readme",
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "typescript": "^6.0.2"
+  }
+}
