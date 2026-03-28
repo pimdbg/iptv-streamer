@@ -1,9 +1,23 @@
 @import "tailwindcss";
 
+@theme {
+  --color-purple-primary: rgb(42,39,55);
+  --color-purple-secondary: rgb(76,71,106);
+}
+
 body {
   @apply bg-[rgba(28,26,39,1)];
 }
 
 html {
   @apply text-white font-light antialiased;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
