@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { cx } from "@/utils/cctx";
+import { Card } from "./Card";
 
 export interface PageCardProps extends React.HTMLAttributes<HTMLButtonElement> {
     title: string;
     subTitle: string;
+    icon?: React.ReactNode;
 }
 
 export function PageCard({
   title,
   subTitle,
-  style,    
+  icon,
   className,
   onMouseEnter,
 onMouseLeave,
   ...props
 }: PageCardProps) {
-    // This UI state is necessary for the border animation, this cannot be done with just tailwindcss logic
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,21 +34,22 @@ onMouseLeave,
             onMouseLeave(event);
         }
     }
+
     return (
-        <button 
-            className={cx("bg-[rgb(42,39,55)] h-full w-64 p-8 pb-12 border border-[rgb(76,71,106,0.75)] hover:scale-105 transition-transform text-left group", className)}
-            style={{
-                borderImage: isHovered 
-                    ? "linear-gradient(to top right, rgba(255,255,255,0.3), rgba(255,255,255,0.1), rgba(255,255,255,0.6)) 1" 
-                    : "none",
-                ...style
-            }}
+        <Card 
+            className={cx("w-64 p-8 pb-12 text-left group", className)}
+            isHighlighted={isHovered}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...props}
         >
             <div className="flex flex-col h-full">
                 <div className="mt-auto">
+                    {icon && (
+                        <div className="mb-4">
+                            {icon}
+                        </div>
+                    )}
                     <h3 className="text-2xl font-medium text-white mt-auto">
                         {title}
                     </h3>
@@ -61,6 +63,6 @@ onMouseLeave,
             <div 
                 className="bg-white h-1 w-1/4 translate-y-full absolute bottom-0 left-1/2 -translate-x-1/2 invisible group-hover:visible"
             />
-        </button>
+        </Card>
   )
 }
