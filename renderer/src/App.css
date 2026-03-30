@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
+  --color-bg: rgb(27,25,38);
   --color-purple-primary: rgb(42,39,55);
   --color-purple-secondary: rgb(76,71,106);
 }
 
 body {
-  @apply bg-[rgba(28,26,39,1)];
+  @apply bg-bg
 }
 
 html {
@@ -20,4 +21,8 @@ html {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.glassmorphism {
+  backdrop-filter: blur(10px);
 }
