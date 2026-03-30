@@ -15,7 +15,7 @@ const WelcomePage = () => {
     }}>
       <div className="w-full h-full relative top-0 p-10 z-10">
         <div className="flex flex-col h-full">
-          <h1 className="text-4xl text-white font-light">Welcome</h1>
+          <h1 className="text-white font-light">Welcome</h1>
           <div className="flex-1 flex">
             <div className="w-full h-92 self-center flex gap-6">
               <PageCard 

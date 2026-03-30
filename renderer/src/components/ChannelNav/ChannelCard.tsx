@@ -1,7 +1,7 @@
 import type { Channel } from "@shared/types";
 import { Card } from "../Card";
 import { LazyImage } from "../LazyImage";
-import { cx } from "@/utils/cctx";
+import { cx } from "@/utils";
 
 interface ChannelCardProps extends React.ComponentProps<typeof Card> {
     channel: Channel;
@@ -22,7 +22,7 @@ export default function ChannelCard({ channel, className, ...props }: ChannelCar
                     className="object-contain"
                 />
             </div>
-            <h3 className="text-white text-2xl font-medium text-left">{channel.name}</h3>
+            <h3 className="text-white font-medium text-left">{channel.name}</h3>
         </Card>
     )
 }

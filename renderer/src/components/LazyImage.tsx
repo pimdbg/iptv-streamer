@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { cx } from "@/utils/cctx";
+import React, { useRef, useState } from "react";
+import { cx } from "@/utils";
+import { useIntersectionObserver } from "@/hooks";
 
 export function LazyImage({ src, className, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
     const ref = useRef<HTMLImageElement>(null);
@@ -19,26 +20,4 @@ export function LazyImage({ src, className, ...props }: React.ImgHTMLAttributes<
             {...props}
         />
     )
-}
-
-function useIntersectionObserver<T extends HTMLElement | null = HTMLElement>(
-    ref: React.RefObject<T>,
-    callback: (entry: IntersectionObserverEntry) => void,
-    options?: IntersectionObserverInit
-) {
-    useEffect(() => {
-        if (!ref.current) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                callback(entry);
-            });
-        }, options);
-
-        observer.observe(ref.current);
-
-        return () => {
-            observer.disconnect();
-        }
-    }, [ref, callback, options]);
 }

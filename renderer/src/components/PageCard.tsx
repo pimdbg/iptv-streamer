@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cx } from "@/utils/cctx";
+import { cx } from "@/utils";
 import { Card } from "./Card";
 
 export interface PageCardProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -50,7 +50,7 @@ onMouseLeave,
                             {icon}
                         </div>
                     )}
-                    <h3 className="text-2xl font-medium text-white mt-auto">
+                    <h3 className="text-white mt-auto">
                         {title}
                     </h3>
                     <p className="text-white/50 font-light text-sm mt-1">
