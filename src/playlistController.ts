@@ -24,6 +24,8 @@ export async function getAllChannels() {
 
     const playlistUrl = "https://iptv-org.github.io/iptv/countries/us.m3u";
     const fetchService = new FetchService();
+
+    // TODO: Cache this result in memory to avoid refetching and reparsing the playlist on every channel select
     const res = await fetchService.get<string>(playlistUrl);
     
     return parseM3U(res);
