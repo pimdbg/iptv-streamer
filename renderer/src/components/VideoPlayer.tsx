@@ -1,7 +1,7 @@
 import Hls from "hls.js";
-import type { Channel } from "../../../shared/types";
+import type { Channel } from "@shared/types";
 import { useEffect, useRef } from "react";
-import { cx } from "../utils/cctx";
+import { cx } from "@/utils/cctx";
 
 interface VideoPlayerProps extends React.HTMLAttributes<HTMLVideoElement> {
     channel: Channel;

@@ -1,11 +1,21 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "jsx": "react-jsx",
     "outDir": "dist",
     "module": "ESNext",
+    "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
-    "strict": true
+    "traceResolution": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@main/*": ["electron/*"],
+      "@react/*": ["renderer/*"]    
+    },
   },
-  "include": ["src"]
+  "include": ["electron", "shared",]
 }

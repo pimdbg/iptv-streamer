@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { type Channel } from "../../../shared/types"
+import { type Channel } from "@shared/types"
 
 type Ok<T> = {
     status: "ok";

@@ -1,5 +1,5 @@
-import { FetchService } from "./FetchService.ts";
-import { type Channel } from "../shared/types.ts";
+import { FetchService } from "./fetchService.js";
+import { type Channel } from "@shared/types.js";
 
 export async function getAllChannels() {
     function parseM3U(data: string): Channel[] {

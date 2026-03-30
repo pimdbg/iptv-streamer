@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { cx } from "../utils/cctx";
+import { cx } from "@/utils/cctx";
 
 export function LazyImage({ src, className, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
     const ref = useRef<HTMLImageElement>(null);

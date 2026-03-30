@@ -1,4 +1,4 @@
-import { cx } from "../utils/cctx";
+import { cx } from "@/utils/cctx";
 
 export interface CardProps extends React.HTMLAttributes<HTMLButtonElement> {
     highlightIndicatorPosition?: "bottom" | "left" | null,

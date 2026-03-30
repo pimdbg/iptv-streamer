@@ -1,7 +1,7 @@
-import type { Channel } from "../../../../shared/types";
+import type { Channel } from "@shared/types";
 import { Card } from "../Card";
-import { cx } from "../../utils/cctx";
 import { LazyImage } from "../LazyImage";
+import { cx } from "@/utils/cctx";
 
 interface ChannelCardProps extends React.ComponentProps<typeof Card> {
     channel: Channel;

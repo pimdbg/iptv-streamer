@@ -1,12 +1,10 @@
-import { useChannels } from "../hooks/useChannels";
-import { cx } from "../utils/cctx";
-import type { Channel } from "../../../shared/types";
 import { useEffect, useRef, useState } from "react";
-import { VideoPlayer } from "../components/VideoPlayer";
-import { ChannelNav } from "../components/ChannelNav/ChannelNav";
-import ChevronLeftIcon from "../assets/icons/angle-small-left.svg";
-import { goTo } from "../routing/utils";
-import { IconButton } from "../components/IconButton";
+import { cx } from "@/utils/cctx";
+import { useChannels } from "@/hooks/useChannels";
+import { VideoPlayer, ChannelNav, IconButton } from "@/components";
+import { goTo } from "@/routing/utils";
+import ChevronLeftIcon from "@/assets/icons/angle-small-left.svg";
+import type { Channel } from "@shared/types";
 
 const ChannelsListPage = () => {
     const { channels, selectedChannel, selectChannel } = useChannels();

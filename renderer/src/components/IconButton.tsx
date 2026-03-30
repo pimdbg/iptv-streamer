@@ -1,4 +1,4 @@
-import { cx } from "../utils/cctx";
+import { cx } from "@/utils/cctx";
 import type { IconProps } from "./Icon";
 
 export function IconButton({ icon, size = 48, className, ...props }: IconProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {

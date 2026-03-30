@@ -1,7 +1,7 @@
     
-import React, { forwardRef, useContext } from "react";
-import type { Channel } from "../../../../shared/types";
-import { cx } from "../../utils/cctx";
+import React, { forwardRef } from "react";
+import type { Channel } from "@shared/types";
+import { cx } from "@/utils/cctx";
 import ChannelCard from "./ChannelCard";
 
 export interface ChannelNavProps {

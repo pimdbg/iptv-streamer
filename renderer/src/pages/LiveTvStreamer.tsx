@@ -1,8 +1,8 @@
 import ChevronLeftIcon from "@/assets/icons/angle-small-left.svg";
-import { useChannels } from "../hooks/useChannels";
-import { VideoPlayer } from "../components/VideoPlayer";
-import React, { useState } from "react";
-import { goTo } from "../routing/utils";
+import { useChannels } from "@/hooks/useChannels";
+import { VideoPlayer } from "@/components/VideoPlayer";
+import { useState } from "react";
+import { goTo } from "@/routing/utils";
 
 const LiveTvStreamer = () => {
     const { selectedChannel } = useChannels();
