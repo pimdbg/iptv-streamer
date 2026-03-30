@@ -27,7 +27,6 @@ export const ChannelNav = forwardRef<HTMLDivElement, ChannelNavProps>(({
             {...props}
         >
             <ul className="w-[700px] flex flex-col gap-6">
-                <p>edwfr</p>
                 {channels.map((channel, index) => (
                     <li key={index} id={`channel-${index}`}>
                         <ChannelCard 
