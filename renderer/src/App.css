@@ -10,7 +10,7 @@ body {
   @apply bg-bg
 }
 
-html {
+html, body {
   @apply text-white font-light antialiased;
 }
 

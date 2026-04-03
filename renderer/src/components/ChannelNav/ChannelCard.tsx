@@ -2,6 +2,8 @@ import type { Channel } from "@shared/types";
 import { Card } from "../Card";
 import { LazyImage } from "../LazyImage";
 import { cx } from "@/utils";
+import { Icon } from "../Icon";
+import StarIcon from "@/assets/icons/star-fill-yellow.svg";
 
 interface ChannelCardProps extends React.ComponentProps<typeof Card> {
     channel: Channel;
@@ -22,7 +24,14 @@ export default function ChannelCard({ channel, className, ...props }: ChannelCar
                     className="object-contain"
                 />
             </div>
-            <h3 className="text-white font-medium text-left">{channel.name}</h3>
+            <div className="flex flex-col flex-1 py-2">
+                <h3 className="text-white font-medium text-left">{channel.name}</h3>
+                
+                <Icon 
+                    icon={StarIcon}
+                    className="mt-auto ml-auto"
+                />
+            </div>
         </Card>
     )
 }

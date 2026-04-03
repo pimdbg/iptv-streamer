@@ -14,7 +14,7 @@ export function PageCard({
   icon,
   className,
   onMouseEnter,
-onMouseLeave,
+  onMouseLeave,
   ...props
 }: PageCardProps) {
     const [isHovered, setIsHovered] = useState(false);

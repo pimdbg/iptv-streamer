@@ -1,18 +1,11 @@
-class CacheItem<T> {
-    constructor(
-      public value: T, 
-      public expiryMinutes: number | null = null
-    ) {}
-
-    isExpired(): boolean {
-        if(this.expiryMinutes === null) return false;
-        return Date.now() > this.expiryMinutes * 60 * 1000;
-    }
-}
+import NodeCache from "node-cache";
 
 export class CacheService {
-    // TODO: Replace with library in order for cache to be more persistant
-    private cache = new Map<string, CacheItem<any>>();
+    private cache;
+
+    constructor() {
+        this.cache = new NodeCache();
+    }
 
     /**
      * Returns the cached value for the given key, or undefined if the key does not exist or the cache item has expired.
@@ -21,11 +14,7 @@ export class CacheService {
      * @returns The cached value associated with the key, or undefined if the key does not exist or the cache item has expired.
      */
     public get<T>(key: string): T | undefined {
-        const cacheItem = this.cache.get(key);
-        if (cacheItem === undefined || cacheItem.isExpired()) {
-            return undefined;
-        }
-        return cacheItem.value as T;
+        return this.cache.get<T>(key);
     }
 
     /**
@@ -35,10 +24,8 @@ export class CacheService {
      * @param value The value to be cached.
      * @param ttl Optional time-to-live in minutes. If provided, the cache item will expire after the specified number of minutes.
      */
-    public set<T>(key: string, value: T, ttl?: number) {
-      const cacheItem = new CacheItem<T>(value, ttl ? Date.now() + ttl : null);
-
-      this.cache.set(key, cacheItem);
+    public set<T>(key: string, value: T, ttl: number = 0) {
+      this.cache.set(key, value, ttl);
     }
 
     /**
@@ -50,20 +37,20 @@ export class CacheService {
     public has(key: string): boolean {
       const cacheItem = this.cache.get(key);
 
-      return cacheItem !== undefined && !cacheItem.isExpired();
+        return cacheItem !== undefined;
     }
 
     /**
      * Deletes the cache item associated with the given key. If the key does not exist, this method does nothing.
      */
     public delete(key: string) {
-        this.cache.delete(key);
+        this.cache.del(key);
     }
 
     /**
      * Clears all items from the cache. After calling this method, the cache will be empty and all previously stored values will be removed.
      */
     public clear() {
-        this.cache.clear();
+        this.cache.flushAll();
     }
 }

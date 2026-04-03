@@ -5,10 +5,13 @@ import { useState } from "react";
 import { goTo } from "@/routing/utils";
 import { IconButton } from "@/components";
 import { useDetectMouseMovement } from "@/hooks";
+import StarIcon from "@/assets/icons/star-fill-yellow.svg";
+import { useFavouriteChannels } from "@/hooks/useFavouriteChannels";
 
 const LiveTvStreamer = () => {
     const { selectedChannel } = useChannels();
     const [displayControls, setDisplayControls] = useState(false);
+    const { addToFavourites, removeFromFavourites } = useFavouriteChannels();
 
     useDetectMouseMovement({
         onMouseMove: () => setDisplayControls(true),
@@ -46,8 +49,15 @@ const LiveTvStreamer = () => {
                         </div>
                     </div>
 
-                    <div>
+                    <div className="flex items-center justify-between w-full">
                         <h2 className="text-white font-medium">{selectedChannel.name}</h2>
+                        <IconButton 
+                            icon={StarIcon}
+                            className="mt-auto"
+                            onClick={() => {
+                                addToFavourites(selectedChannel);
+                            }}
+                        />
                     </div>
                 </div>
             )}

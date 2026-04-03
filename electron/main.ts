@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path"
 import { getAllChannels } from "./playlistController.js";
+import { addFavouriteChannel, getFavouriteChannels, removeFavouriteChannel } from "./favouriteChannelController.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +29,11 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('playlist:index', getAllChannels)
+  ipcMain.handle('favourite:add', addFavouriteChannel)
+  ipcMain.handle('favourite:remove', removeFavouriteChannel)
+  ipcMain.handle('favourite:index', getFavouriteChannels)
 })
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

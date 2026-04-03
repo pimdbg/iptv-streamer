@@ -24,26 +24,30 @@ export const ChannelNav = forwardRef<HTMLDivElement, ChannelNavProps>(({
 }: ChannelNavProps & React.HTMLAttributes<HTMLDivElement>, ref) => {
     return (
         <nav
-            className={cx("overflow-y-scroll no-scrollbar max-h-screen h-full px-10 py-48", className)}
+            className={cx("overflow-y-scroll no-scrollbar max-h-screen w-full h-full px-10 py-48", className)}
             ref={ref}
             {...props}
         >
-            <ul className="w-[700px] flex flex-col gap-6">
-                {channels.map((channel, index) => (
-                    <li key={index} id={`channel-${index}`}>
-                        <ChannelCard 
-                            channel={channel}
-                            isHighlighted={focusedChannel?.url === channel.url}
-                            onClick={() => {
-                                onChannelSelect?.(channel);
-                            }}
-                            onFocus={() => {
-                                onChannelFocus(channel);
-                            }}
-                        />
-                    </li>
-                ))}
-            </ul>
+            {channels.length > 0 ? (
+                <ul className="w-full flex flex-col gap-6">
+                    {channels.map((channel, index) => (
+                        <li key={index} id={`channel-${index}`}>
+                            <ChannelCard 
+                                channel={channel}
+                                isHighlighted={focusedChannel?.url === channel.url}
+                                onClick={() => {
+                                    onChannelSelect?.(channel);
+                                }}
+                                onFocus={() => {
+                                    onChannelFocus(channel);
+                                }}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p className="text-white/70 text-center">No channels found</p>
+            )}
         </nav>
     )
 })
