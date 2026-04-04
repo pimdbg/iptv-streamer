@@ -24,7 +24,7 @@ export const ChannelNav = forwardRef<HTMLDivElement, ChannelNavProps>(({
 }: ChannelNavProps & React.HTMLAttributes<HTMLDivElement>, ref) => {
     return (
         <nav
-            className={cx("overflow-y-scroll no-scrollbar max-h-screen w-full h-full px-10 py-48", className)}
+            className={cx("overflow-y-scroll no-scrollbar max-h-screen h-full px-10 py-48", className)}
             ref={ref}
             {...props}
         >

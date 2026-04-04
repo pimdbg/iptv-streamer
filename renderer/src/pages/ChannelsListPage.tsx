@@ -9,28 +9,23 @@ import StarIcon from "@/assets/icons/star.svg";
 import type { Channel } from "@shared/types";
 import { useChannels, useGetCurrentDate } from "@/hooks";
 import { IconSize } from "@/enums/IconSize";
-import { ChannelCategories } from "@/enums/ChannelCategories";
 
 const ChannelsListPage = () => {
     const { 
         channels, 
         selectedChannel, 
+        selectedCategory,
         selectCategory,
         selectChannel,
-        selectedCategory,
     } = useChannels();
-
-    const [query, setQuery] = useState("");
     const [focusedChannel, setFocusedChannel] = useState<Channel | null>(selectedChannel);
-    
+    const [query, setQuery] = useState("");
     const channelListRef = useRef<HTMLDivElement>(null);
     
     // Retrieves all channels that match the search query. Returns all channels if the query is empty.
-    const filteredChannels = useMemo(() => {
-        if(!query) return channels;
-
-        return channels.filter(channel => channel.name.toLowerCase().includes(query.toLowerCase()))
-    }, [channels, query]);
+    const filteredChannels = useMemo(() => query
+        ? channels.filter(channel => channel.name.toLowerCase().includes(query.toLowerCase())) 
+        : channels, [channels, query]);
 
     const scrollToChannel = (channel: Channel, options?: ScrollIntoViewOptions) => {
         const element = channelListRef?.current?.querySelector(`#channel-${channels.findIndex(c => c.url === channel.url)}`)
@@ -73,24 +68,30 @@ const ChannelsListPage = () => {
                         <IconButton 
                             size={IconSize.LARGE}
                             icon={RetroTvIcon}
+                            className={cx(selectedCategory === 'default' && 'bg-purple-secondary')}
                             onClick={() => {
-                                selectCategory?.(ChannelCategories.DEFAULT);
+                                selectCategory?.('default');
                             }}
                         />
+
                         <IconButton 
                             size={IconSize.LARGE}
                             icon={StarIcon}
+                            className={cx(selectedCategory === 'favourites' && 'bg-purple-secondary')}
                             onClick={() => {
-                                selectCategory?.(ChannelCategories.FAVOURITES);
+                                selectCategory?.('favourites');
                             }}
+
                         />
                     </div>
                 </div>
 
-                <div className="flex-1 w-[70%] flex h-full">
+
+                <div className="flex-1 flex h-full">
                     <ChannelNav
                         channels={filteredChannels}
                         ref={channelListRef}
+                        className="w-[50vw]"
                         selectedChannel={selectedChannel}
                         focusedChannel={focusedChannel}
                         onChannelSelect={(channel) => {
@@ -105,6 +106,7 @@ const ChannelsListPage = () => {
                         onChannelFocus={setFocusedChannel}
                     />
                 </div>
+
                 <div className="flex-1 flex">
                     {selectedChannel && (
                         <div 

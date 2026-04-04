@@ -1,10 +1,11 @@
-import NodeCache from "node-cache";
+import CacheItem from '../models/cacheItem.js';
+import Store from 'electron-store';
 
-export class CacheService {
-    private cache;
+export class Cache {
+    private store: Store;
 
     constructor() {
-        this.cache = new NodeCache();
+        this.store = new Store()
     }
 
     /**
@@ -14,7 +15,14 @@ export class CacheService {
      * @returns The cached value associated with the key, or undefined if the key does not exist or the cache item has expired.
      */
     public get<T>(key: string): T | undefined {
-        return this.cache.get<T>(key);
+        const storedValue = this.store.get(key);
+        const cacheItem = CacheItem.fromStoredValue<T>(storedValue);
+
+        if (cacheItem === undefined || cacheItem.isExpired()) {
+            return undefined;
+        }
+
+        return cacheItem.value as T;
     }
 
     /**
@@ -24,8 +32,10 @@ export class CacheService {
      * @param value The value to be cached.
      * @param ttl Optional time-to-live in minutes. If provided, the cache item will expire after the specified number of minutes.
      */
-    public set<T>(key: string, value: T, ttl: number = 0) {
-      this.cache.set(key, value, ttl);
+    public set<T>(key: string, value: T, ttl?: number) {
+      const cacheItem = new CacheItem<T>(value, ttl);
+
+      this.store.set(key, cacheItem);
     }
 
     /**
@@ -35,22 +45,23 @@ export class CacheService {
      * @returns True if the cache contains a non-expired value for the key, false otherwise.
      */
     public has(key: string): boolean {
-      const cacheItem = this.cache.get(key);
+        const storedValue = this.store.get(key);
+        const cacheItem = CacheItem.fromStoredValue(storedValue);
 
-        return cacheItem !== undefined;
+        return cacheItem !== undefined && !cacheItem.isExpired();
     }
 
     /**
      * Deletes the cache item associated with the given key. If the key does not exist, this method does nothing.
      */
     public delete(key: string) {
-        this.cache.del(key);
+        this.store.delete(key);
     }
 
     /**
      * Clears all items from the cache. After calling this method, the cache will be empty and all previously stored values will be removed.
      */
     public clear() {
-        this.cache.flushAll();
+        this.store.clear();
     }
 }

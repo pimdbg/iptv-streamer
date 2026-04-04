@@ -26,11 +26,12 @@ export default function ChannelCard({ channel, className, ...props }: ChannelCar
             </div>
             <div className="flex flex-col flex-1 py-2">
                 <h3 className="text-white font-medium text-left">{channel.name}</h3>
-                
-                <Icon 
-                    icon={StarIcon}
-                    className="mt-auto ml-auto"
-                />
+                {channel.isFavourite && (
+                    <Icon 
+                        icon={StarIcon}
+                        className="mt-auto ml-auto"
+                    />
+                )}
             </div>
         </Card>
     )

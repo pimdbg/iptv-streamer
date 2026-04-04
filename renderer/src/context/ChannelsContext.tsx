@@ -1,13 +1,12 @@
-import { createContext, useEffect, useMemo, useState } from "react";
-import { type Channel } from "@shared/types"
-import { ChannelCategories } from "@/enums/ChannelCategories";
+import { createContext, useEffect, useState } from "react";
+import { type Channel, type ParsedChannel } from "@shared/types"
 
 type ChannelsContextType = {
     channels: Channel[];
     selectedChannel: Channel | null;
-    selectedCategory?: ChannelCategories;
+    selectedCategory?: string;
     selectChannel: (channel: Channel) => void;
-    selectCategory: (category: ChannelCategories) => void;
+    selectCategory: (category: string) => void;
     fetchChannels?: () => Promise<void>;
 }
 
@@ -15,7 +14,7 @@ export const ChannelsContext = createContext<ChannelsContextType>({ channels: []
 
 export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
     const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<ChannelCategories>(ChannelCategories.DEFAULT);
+    const [selectedCategory, setSelectedCategory] = useState<string>('default');
 
     // Keeping the key a string and not an enum because it might must become dynamic in case categories are loaded via the main process
     const [channelsMap, setChannelsMap] = useState<Record<string, Channel[]>>({});
@@ -23,22 +22,23 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
     const channels = channelsMap[selectedCategory] ?? [];
 
     const fetchChannels = async () => {
-        console.log(window.electronAPI);
-        window.electronAPI.getPlaylists()
-                            .then((data: Channel[]) => 
-                                setChannelsMap(prev => ({ 
-                                    ...prev, 
-                                    ['default']: data
-                                }))
-                            )
+        const favouriteChannelResponse = await window.electronAPI.getFavourites();
+        const favouriteChannelData = favouriteChannelResponse.map<Channel>((channel: ParsedChannel) => ({ 
+            ...channel, 
+            isFavourite: true 
+        }));
+        
+        const playlistResponse = await window.electronAPI.getPlaylists();
+        const playlistData = playlistResponse.map<Channel>((channel: ParsedChannel) => ({ 
+            ...channel, 
+            isFavourite: favouriteChannelData.some((fav: Channel) => fav.url === channel.url)
+        }));
 
-        window.electronAPI.getFavourites()
-                            .then((data: Channel[]) => 
-                                setChannelsMap(prev => ({ 
-                                    ...prev, 
-                                    ['favourites']: data
-                                }))
-                            )
+        setChannelsMap(prev => ({ 
+            ...prev, 
+            ['default']: playlistData,
+            ['favourites']: favouriteChannelData,
+        }))
     }
 
     // Wrapper function to set selected channel
@@ -46,7 +46,7 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
         setSelectedChannel(channel);
     }
 
-    const selectCategory = (category: ChannelCategories) => {
+    const selectCategory = (category: string) => {
         setSelectedCategory(category);
     }
 
@@ -60,6 +60,7 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
         <ChannelsContext.Provider value={{ 
             channels, 
             selectedChannel, 
+            selectedCategory,
             fetchChannels, 
             selectChannel,
             selectCategory,
