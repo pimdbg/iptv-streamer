@@ -21,7 +21,7 @@ export async function getAllChannels(): Promise<Channel[]> {
     cacheService.set(playlistUrl, parsedData, 1000 * 20 * 60); // Cache for 20 minutes
 
     // Do not cache the normalized data because the favourite status can change more frequently. This way the cache does not have to be invalidated every time a channel is added or removed from favourites.
-    const normalizedData = mapParsedChannelsToChannels(parsedData);
+    // const normalizedData = mapParsedChannelsToChannels(parsedData);
 
-    return normalizedData;
+    return parsedData;
 }

@@ -15,29 +15,34 @@ const cacheService = new Cache();
  * @returns A `Result<void>` indicating success or an error if the channel is already a favourite.
  */
 export function addFavouriteChannel(event: Electron.IpcMainInvokeEvent, channel: Channel) {
-    const favouriteChannels = cacheService.get<string[]>("favouriteChannels") || [];
+    const favouriteChannels = cacheService.get<Channel[]>("favouriteChannels") || [];
 
     // Check if the channel is already in favourites
-    if (favouriteChannels.some(url => url === channel.url)) {
+    if (favouriteChannels.some(({ url }) => url === channel.url)) {
         return;
     }
 
-    favouriteChannels.push(channel.url);
+    favouriteChannels.push({ ...channel, isFavourite: true });
     cacheService.set("favouriteChannels", favouriteChannels);
+
+    console.log(`Added channel ${channel.name} to favourites.`, channel);
 }
+
 
 /**
  * Removes a channel from the list of favourite channels based on its URL.
  *
  * @param event - The Electron IPC event that triggered this action.
- * @param channelUrl - The URL of the channel to be removed from favourites.
+ * @param channel - The channel to be removed from favourites.
  * @returns A `Result<void>` indicating the outcome of the operation.
  */
-export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, channelUrl: string) {
-    const favouriteChannels = cacheService.get<string[]>("favouriteChannels") || [];
+export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, channel: Channel) {
+    const favouriteChannels = cacheService.get<Channel[]>("favouriteChannels") || [];
 
-    const updatedFavourites = favouriteChannels.filter(url => url !== channelUrl);
-    cacheService.set("favouriteChannels", updatedFavourites);;
+    const updatedFavourites = favouriteChannels.filter(({ url }) => url !== channel.url);
+    cacheService.set("favouriteChannels", updatedFavourites);
+
+    console.log(`Removed channel ${channel.name} from favourites.`, channel);
 }
 
 /**
@@ -51,10 +56,8 @@ export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, chann
  */
 export function getFavouriteChannels(): Channel[] {
     const cacheService = new Cache();
-    const favouriteUrls = cacheService.get<string[]>("favouriteChannels") || [];
+    const favouriteChannels = cacheService.get<Channel[]>("favouriteChannels") || [];
 
-    const channels = cacheService.get<Channel[]>("default") || [];
-    const favouriteChannels = channels.filter(channel => favouriteUrls.includes(channel.url));
-
+    console.log("Retrieved favourite channels from cache:", favouriteChannels);
     return favouriteChannels;
 }

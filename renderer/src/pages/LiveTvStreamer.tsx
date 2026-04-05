@@ -10,15 +10,28 @@ import StarIcon from "@/assets/icons/star.svg";
 import { useFavouriteChannels } from "@/hooks/useFavouriteChannels";
 
 const LiveTvStreamer = () => {
-    const { selectedChannel } = useChannels();
+    const { selectedChannel, fetchFavouriteChannels } = useChannels();
     const [displayControls, setDisplayControls] = useState(false);
-    const { addToFavourites, removeFromFavourites } = useFavouriteChannels();
+    const { 
+        addToFavourites, 
+        removeFromFavourites,
+    } = useFavouriteChannels();
 
     useDetectMouseMovement({
         onMouseMove: () => setDisplayControls(true),
         onMouseFade: () => setDisplayControls(false),
         timeoutMs: 3000,
     })
+
+    const handleAddToFavourites = () => {
+        addToFavourites(selectedChannel!);
+        fetchFavouriteChannels();
+    }
+
+    const handleRemoveFromFavourites = () => {
+        removeFromFavourites(selectedChannel!);
+        fetchFavouriteChannels();   
+    }
 
     if(!selectedChannel) {
         goTo("#/channels-list");
@@ -50,24 +63,19 @@ const LiveTvStreamer = () => {
                         </div>
                     </div>
 
-
                     <div className="flex items-center justify-between w-full">
                         <h2 className="text-white font-medium">{selectedChannel.name}</h2>
                         {selectedChannel.isFavourite ? (
                             <IconButton 
                                 icon={StarFillIcon}
                                 className="mt-auto"
-                                onClick={() => {
-                                    removeFromFavourites(selectedChannel);
-                                }}
+                                onClick={handleRemoveFromFavourites}
                             />
                         ) : (
                             <IconButton 
                                 icon={StarIcon}
                                 className="mt-auto opacity-40"
-                                onClick={() => {
-                                    addToFavourites(selectedChannel);
-                                }}
+                                onClick={handleAddToFavourites}
                             />
                         )}
                     </div>
