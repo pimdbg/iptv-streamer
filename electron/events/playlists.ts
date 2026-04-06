@@ -1,11 +1,11 @@
 import { FetchService } from "../services/fetchService.js";
-import { Cache } from "../services/cache.js";
 import { ParsedChannel, type Channel } from "../../shared/types.js";
 import { parseM3UToChannels } from "../utils/parsers.js";
 import { env } from "../../shared/utils/env.js";
 import { mapParsedChannelsToChannels } from "../utils/mappers.js";
+import { PersistentCache } from "@electron/services/cache.js";
 
-const cacheService = new Cache();
+const cacheService = new PersistentCache();
 const fetchService = new FetchService();
 
 export async function getAllChannels(): Promise<Channel[]> {

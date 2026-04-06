@@ -10,19 +10,7 @@ interface VideoPlayerProps extends React.HTMLAttributes<HTMLVideoElement> {
 export function VideoPlayer({ channel, className, ...props }: VideoPlayerProps) {
     const ref = useRef<HTMLVideoElement>(null);
     
-    useEffect(() => {
-        if (!ref.current) return;
-
-        const video = ref.current;
-        const hls = new Hls();
-
-        hls.loadSource(channel.url);
-        hls.attachMedia(video);
-
-        return () => {
-            hls.destroy();
-        };
-    }, [channel.url, ref])
+    useVideoPlayerManager(ref, channel.url);
 
     return (
         <video
@@ -32,4 +20,23 @@ export function VideoPlayer({ channel, className, ...props }: VideoPlayerProps) 
             {...props}
         />
     )
+}
+
+function useVideoPlayerManager(
+    ref: React.RefObject<HTMLVideoElement | null>, 
+    sourceUrl: string,
+) {
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const video = ref.current;
+        const hls = new Hls();
+
+        hls.loadSource(sourceUrl);
+        hls.attachMedia(video);
+
+        return () => {
+            hls.destroy();
+        };
+    }, [sourceUrl, ref])
 }

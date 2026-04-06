@@ -1,7 +1,7 @@
 import { type Channel } from "../../shared/types.js";
-import { Cache } from "../../electron/services/cache.js";
+import { PersistentCache } from "../../electron/services/cache.js";
 
-const cacheService = new Cache();
+const cacheService = new PersistentCache();
 
 /**
  * Adds a channel to the list of favourite channels.
@@ -27,7 +27,6 @@ export function addFavouriteChannel(event: Electron.IpcMainInvokeEvent, channel:
 
     console.log(`Added channel ${channel.name} to favourites.`, channel);
 }
-
 
 /**
  * Removes a channel from the list of favourite channels based on its URL.
@@ -55,7 +54,6 @@ export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, chann
  * This function uses the `cacheService` to fetch the stored favourite channels.
  */
 export function getFavouriteChannels(): Channel[] {
-    const cacheService = new Cache();
     const favouriteChannels = cacheService.get<Channel[]>("favouriteChannels") || [];
 
     console.log("Retrieved favourite channels from cache:", favouriteChannels);

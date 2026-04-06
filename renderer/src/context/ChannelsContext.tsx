@@ -21,24 +21,30 @@ export const ChannelsContext = createContext<ChannelsContextType>({
     fetchFavouriteChannels: async () => {},
 });
 
+const arrayToMap = (array: Channel[]): Record<string, Channel> => {
+    return array.reduce((acc: Record<string, Channel>, channel: Channel) => {
+        acc[channel.url] = channel;
+        return acc;
+    }, {});
+}
+
 export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
     const [selectedChannelUrl, setSelectedChannelUrl] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('default');
     const [favouriteChannels, setFavouriteChannels] = useState<Channel[]>([]);
 
-    // Keeping the key a string and not an enum because it might must become dynamic in case categories are loaded via the main process
-    const [channelsMap, setChannelsMap] = useState<Record<string, Channel[]>>({
-        'default': [],
-        'favourites': [],
+    // Stores channels in a map for O(1) access, with categories as the first level keys and channel URLs as the second level keys.
+    const [channelsMap, setChannelsMap] = useState<Record<string, Record<string, Channel>>>({
+        'default': {},
+        'favourites': {},
     });
-
     
-    const channels = channelsMap[selectedCategory] ?? [];
-    const selectedChannel = channels.find(channel => channel.url === selectedChannelUrl) || null;
+    const channels = channelsMap[selectedCategory] ?? {};
+    const selectedChannel = channels[selectedChannelUrl ?? ''] ?? null;
 
     const fetchFavouriteChannels = async () => {
         const favouriteChannelResponse = await window.electronAPI.getFavourites();
-        const favouriteChannelData = favouriteChannelResponse.map<any>((channel: Channel) => ({ 
+        const favouriteChannelData = favouriteChannelResponse.map<Channel>((channel: ParsedChannel) => ({ 
             ...channel, 
             isFavourite: true,
         }));
@@ -48,16 +54,21 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
 
     const fetchChannels = async () => {
         const playlistResponse = await window.electronAPI.getPlaylists();
-        const playlistData = playlistResponse.map<Channel>((channel: ParsedChannel) => ({ 
-            ...channel, 
-            isFavourite: channelsMap['favourites']?.some((fav: Channel) => fav.url === channel.url) ?? false
-        }));
+        const playlistData = arrayToMap(
+            playlistResponse.map(
+                channel => ({
+                    ...channel,
+                    isFavourite: channelsMap['favourites']?.[channel.url]?.isFavourite ?? false
+                })
+            )
+        );
 
         setChannelsMap(prev => ({ 
             ...prev, 
             ['default']: playlistData,
         }))
     }
+
     
     const selectChannel = (channel: Channel) => {
         setSelectedChannelUrl(channel.url);
@@ -68,29 +79,35 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
         setSelectedCategory(category);
     }
 
+    // Initial fetch of channels and favourite channels when the component mounts
     useEffect(() => {
         fetchFavouriteChannels();
         fetchChannels();
     }, [])
 
+    // Catches updated favourite channels, and updates the channelsMap to reflect the new favourite status of channels in the default category, as well as updating the favourites category with the new list of favourite channels.
     useEffect(() => {
         if(channelsMap['default'] == null) return;
+
+        const updatedDefaultChannels = { ...channelsMap['default'] };
+        const updatedFavouriteChannels = arrayToMap(favouriteChannels);
         
-        const updatedDefaultChannels = channelsMap['default'].map(channel => ({
-            ...channel,
-            isFavourite: favouriteChannels.some((fav: Channel) => fav.url === channel.url)
-        }));
+        favouriteChannels.forEach((fav: Channel) => {
+            if(updatedDefaultChannels[fav.url]) {
+                updatedDefaultChannels[fav.url].isFavourite = true;
+            }
+        });
 
         setChannelsMap(prev => ({
             ...prev,
             ['default']: updatedDefaultChannels,
-            ['favourites']: favouriteChannels,
+            ['favourites']: updatedFavouriteChannels,
         }))
     }, [favouriteChannels])
 
     return (
         <ChannelsContext.Provider value={{ 
-            channels, 
+            channels: Object.values(channels), 
             selectedChannel, 
             selectedCategory,
             fetchChannels, 
@@ -101,5 +118,4 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
             {children}
         </ChannelsContext.Provider>
     );
-
 }

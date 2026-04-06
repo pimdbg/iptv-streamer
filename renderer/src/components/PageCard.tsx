@@ -15,24 +15,30 @@ export function PageCard({
   className,
   onMouseEnter,
   onMouseLeave,
+  onFocus,
+  onBlur,
   ...props
 }: PageCardProps) {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsHovered(true);
-        
-        if (onMouseEnter) {
-            onMouseEnter(event);
-        }
+        onMouseEnter?.(event);
     }
 
     const handleMouseLeave = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsHovered(false);
+        onMouseLeave?.(event);
+    }
 
-        if (onMouseLeave) {
-            onMouseLeave(event);
-        }
+    const handleFocus = (event: React.FocusEvent<HTMLButtonElement>) => {
+        setIsHovered(true);
+        onFocus?.(event);
+    }
+
+    const handleBlur = (event: React.FocusEvent<HTMLButtonElement>) => {
+        setIsHovered(false);
+        onBlur?.(event);
     }
 
     return (
@@ -41,6 +47,8 @@ export function PageCard({
             isHighlighted={isHovered}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             {...props}
         >
             <div className="flex flex-col h-full">
