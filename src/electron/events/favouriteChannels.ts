@@ -1,5 +1,5 @@
 import { type Channel } from "../../shared/types.js";
-import { PersistentCache } from "../../electron/services/cache.js";
+import { PersistentCache } from "../services/persistenCache.js";
 
 const cacheService = new PersistentCache();
 

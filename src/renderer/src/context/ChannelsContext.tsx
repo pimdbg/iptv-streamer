@@ -68,7 +68,6 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
             ['default']: playlistData,
         }))
     }
-
     
     const selectChannel = (channel: Channel) => {
         setSelectedChannelUrl(channel.url);
@@ -81,8 +80,8 @@ export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
 
     // Initial fetch of channels and favourite channels when the component mounts
     useEffect(() => {
-        fetchFavouriteChannels();
         fetchChannels();
+        fetchFavouriteChannels();
     }, [])
 
     // Catches updated favourite channels, and updates the channelsMap to reflect the new favourite status of channels in the default category, as well as updating the favourites category with the new list of favourite channels.

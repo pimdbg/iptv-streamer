@@ -4,6 +4,7 @@ export interface ParsedChannel {
     group?: string;
     url: string;
 }
+
 export interface Channel extends ParsedChannel {
   isFavourite?: boolean;
 }

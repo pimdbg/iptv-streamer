@@ -1,17 +1,14 @@
 
-import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, ipcMain } from "electron";
 import { events } from "./events/index.js";
 import path from "node:path"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 function createWindow () {
   const win = new BrowserWindow({
     fullscreen: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, '../preload/preload.js')
     }
   })
   

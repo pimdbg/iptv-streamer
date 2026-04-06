@@ -55,6 +55,7 @@ const WelcomePage = () => {
     </WelcomeLayout>
   )
 }
+
 function WelcomeLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
