@@ -8,8 +8,6 @@ export function parseM3UToChannels(data: string): ParsedChannel[] {
         if (lines[i].startsWith("#EXTINF")) {
             const info = lines[i];
 
-            console.log(info);
-
             const name = info.split(",")[1];
             const logo = info.match(/tvg-logo="(.*?)"/)?.[1];
             const group = info.match(/group-title="(.*?)"/)?.[1];
