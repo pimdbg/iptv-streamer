@@ -42,7 +42,6 @@ export class FetchService {
                     response.on("end", () => {
                         resolve(data as unknown as T);
                     });
-
                 }).on("error", reject).end()
             }
         ), retries, backoffMs);

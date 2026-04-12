@@ -9,13 +9,11 @@ const fetchService = new FetchService();
 
 export async function getAllChannels(): Promise<Channel[]> {
     const playlistUrl = env('IPTV_PLAYLIST_URL', "https://iptv-org.github.io/iptv/countries/us.m3u")!;
-    await fetchService.get<string>(playlistUrl);
     
     // Skip fetching and parsing the playlist if it's already cached
     if(cacheService.has(playlistUrl)) {
         return cacheService.get<ParsedChannel[]>(playlistUrl)!;
     }
-
     
     const resData = await fetchService.get<string>(playlistUrl);
     const parsedData = parseM3UToChannels(resData);
