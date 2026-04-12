@@ -1,5 +1,5 @@
-import { PersistentCache } from "../services/persistenCache.js";
 import { type ParsedChannel, type Channel } from "../../shared/types.js";
+import { PersistentCache } from "../services/persistentCache.js";
 
 export function mapParsedChannelsToChannels(channels: ParsedChannel[]): Channel[] {
     const favouriteChannels = new PersistentCache().get<Channel[]>("favouriteChannels") || [];
