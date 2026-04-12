@@ -1,7 +1,7 @@
-import Hls from "hls.js";
 import type { Channel } from "@shared/types";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { cx } from "@/utils";
+import { useVideoPlayerManager } from "@/hooks";
 
 interface VideoPlayerProps extends React.HTMLAttributes<HTMLVideoElement> {
     channel: Channel;
@@ -20,23 +20,4 @@ export function VideoPlayer({ channel, className, ...props }: VideoPlayerProps) 
             {...props}
         />
     )
-}
-
-function useVideoPlayerManager(
-    ref: React.RefObject<HTMLVideoElement | null>, 
-    sourceUrl: string,
-) {
-    useEffect(() => {
-        if (!ref.current) return;
-
-        const video = ref.current;
-        const hls = new Hls();
-
-        hls.loadSource(sourceUrl);
-        hls.attachMedia(video);
-
-        return () => {
-            hls.destroy();
-        };
-    }, [sourceUrl, ref])
 }

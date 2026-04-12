@@ -66,11 +66,6 @@ export function PageCard({
                     </p>
                 </div>
             </div>
-            
-            {/* Hover indicator, only visible on hover */}
-            <div 
-                className="bg-white h-1 w-1/4 translate-y-full absolute bottom-0 left-1/2 -translate-x-1/2 invisible group-hover:visible"
-            />
         </Card>
   )
 }

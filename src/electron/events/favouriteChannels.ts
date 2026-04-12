@@ -24,8 +24,6 @@ export function addFavouriteChannel(event: Electron.IpcMainInvokeEvent, channel:
 
     favouriteChannels.push({ ...channel, isFavourite: true });
     cacheService.set("favouriteChannels", favouriteChannels);
-
-    console.log(`Added channel ${channel.name} to favourites.`, channel);
 }
 
 /**
@@ -40,8 +38,6 @@ export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, chann
 
     const updatedFavourites = favouriteChannels.filter(({ url }) => url !== channel.url);
     cacheService.set("favouriteChannels", updatedFavourites);
-
-    console.log(`Removed channel ${channel.name} from favourites.`, channel);
 }
 
 /**
@@ -56,6 +52,5 @@ export function removeFavouriteChannel(event: Electron.IpcMainInvokeEvent, chann
 export function getFavouriteChannels(): Channel[] {
     const favouriteChannels = cacheService.get<Channel[]>("favouriteChannels") || [];
 
-    console.log("Retrieved favourite channels from cache:", favouriteChannels);
     return favouriteChannels;
 }
