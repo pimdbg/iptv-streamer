@@ -1,5 +1,5 @@
-import { addFavouriteChannel, getFavouriteChannels, removeFavouriteChannel } from "./favouriteChannels.js";
-import { getAllChannels } from "./playlists.js";
+import { addFavouriteChannel, getFavouriteChannels, removeFavouriteChannel } from "./favouriteChannels";
+import { getAllChannels } from "./playlists";
 
 export const events = {
   'playlist:index': getAllChannels,

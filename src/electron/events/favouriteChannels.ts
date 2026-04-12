@@ -1,5 +1,5 @@
-import { type Channel } from "../../shared/types.js";
-import { PersistentCache } from "../services/persistenCache.js";
+import { type Channel } from "../../shared/types";
+import { PersistentCache } from "../services/persistentCache";
 
 const cacheService = new PersistentCache();
 

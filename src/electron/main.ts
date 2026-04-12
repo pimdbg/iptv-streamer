@@ -1,6 +1,6 @@
 
 import { app, BrowserWindow, ipcMain } from "electron";
-import { events } from "./events/index.js";
+import { events } from "./events/index";
 import path from "node:path"
 
 

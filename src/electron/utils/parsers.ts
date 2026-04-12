@@ -1,4 +1,4 @@
-import { type ParsedChannel } from "../../shared/types.js";
+import { type ParsedChannel } from "../../shared/types";
 
 export function parseM3UToChannels(data: string): ParsedChannel[] {
     const lines = data.split("\n");

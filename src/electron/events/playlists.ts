@@ -1,7 +1,7 @@
-import { FetchService } from "../services/fetchService.js";
-import { type ParsedChannel, type Channel } from "../../shared/types.js";
-import { parseM3UToChannels } from "../utils/parsers.js";
-import { env } from "../../shared/utils/env.js";
+import { FetchService } from "../services/fetchService";
+import { type ParsedChannel, type Channel } from "../../shared/types";
+import { parseM3UToChannels } from "../utils/parsers";
+import { env } from "../../shared/utils/env";
 import { PersistentCache } from "../services/persistentCache";
 
 const cacheService = new PersistentCache();
