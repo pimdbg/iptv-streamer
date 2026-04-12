@@ -78,7 +78,6 @@ const ChannelsListPage = () => {
                             onClick={() => {
                                 selectCategory?.('favourites');
                             }}
-
                         />
                     </div>
                 </div>

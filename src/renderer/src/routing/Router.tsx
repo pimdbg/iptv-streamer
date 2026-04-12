@@ -19,6 +19,6 @@ export const Router = () => {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  const Component = Routes[path] || (() => <div>Not found</div>);
+  const Component = Routes[path] || (() => <div>404 Not Found</div>);
   return <Component />;
 }

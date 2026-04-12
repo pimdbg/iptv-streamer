@@ -28,6 +28,23 @@ const arrayToMap = (array: Channel[]): Record<string, Channel> => {
     }, {});
 }
 
+/**
+ * Provides channel-related state and actions to its children via React Context.
+ * 
+ * This provider manages:
+ * - The currently selected channel and category.
+ * - The list of favourite channels.
+ * - A map of channels organized by category for efficient access.
+ * - Fetching and updating of channels and favourites from the Electron API.
+ * - Synchronization of favourite status between the default and favourites categories.
+ * 
+ * @param children - The React children nodes to be rendered within the provider.
+ * 
+ * @remarks
+ * - Uses Electron's IPC API to fetch playlists and favourites.
+ * - Keeps the favourite status in sync across categories.
+ * - Exposes context values and actions for channel selection, category selection, and refreshing data.
+ */
 export function ChannelsProvider({ children }: { children: React.ReactNode  }) {
     const [selectedChannelUrl, setSelectedChannelUrl] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('default');

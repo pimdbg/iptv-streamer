@@ -3,7 +3,6 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import { events } from "./events/index";
 import path from "node:path"
 
-
 function createWindow () {
   const win = new BrowserWindow({
     fullscreen: true,
@@ -29,7 +28,6 @@ app.whenReady().then(() => {
   ipcMain.handle('favourite:remove', events['favourite:remove'])
   ipcMain.handle('favourite:index', events['favourite:index'])
 })
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
